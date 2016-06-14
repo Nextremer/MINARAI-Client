@@ -1,0 +1,23 @@
+{
+  "name": "minarai-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/minarai-client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "dependencies": {
+    "eventemitter2": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^1.7.0-beta",
+    "gulp-typescript": "2.9.0",
+    "gulp-tsd": "0.0.4",
+    "socket.io-client": "latest",
+    "gulp-watch": "latest",
+    "tsd": "0.5.7",
+    "command-line-args" : "latest"
+  },
+  "license": "-"
+}
