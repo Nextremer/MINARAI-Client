@@ -52,7 +52,8 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
 
   public send( utter ){
     // TODO プロトコルを合わせる
-    this.socket.emit('message', {utterance: utter});
+    //this.socket.emit('message', {utterance: utter});
+    this.socket.emit('message', {message : utter});
   }
 }
 

@@ -8,7 +8,8 @@
   },
   "author": "",
   "dependencies": {
-    "eventemitter2": "latest"
+    "eventemitter2": "latest",
+    "gulp": "^3.9.1"
   },
   "devDependencies": {
     "typescript": "^1.7.0-beta",
@@ -17,7 +18,7 @@
     "socket.io-client": "latest",
     "gulp-watch": "latest",
     "tsd": "0.5.7",
-    "command-line-args" : "latest"
+    "command-line-args": "latest"
   },
   "license": "-"
 }

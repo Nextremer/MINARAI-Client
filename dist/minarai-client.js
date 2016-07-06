@@ -36,7 +36,8 @@ var MinaraiClient = (function (_super) {
     };
     MinaraiClient.prototype.send = function (utter) {
         // TODO プロトコルを合わせる
-        this.socket.emit('message', { utterance: utter });
+        //this.socket.emit('message', {utterance: utter});
+        this.socket.emit('message', { message: utter });
     };
     return MinaraiClient;
 })(EventEmmitter2.EventEmitter2);

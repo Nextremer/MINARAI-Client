@@ -139,7 +139,7 @@ and done with Build part.
 
 ```
 node examples/conversation.js --url <node-proxy url> --basicAuth=id:password
-ex) node examples/conversation.js  --url http://www.mandigiro.com/ --basicAuth=tosaben-nx:nx-tosaben
+ex) node examples/conversation.js --url http://localhost:3000/minarai
 ```
 
 #### options

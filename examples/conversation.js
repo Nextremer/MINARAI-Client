@@ -33,9 +33,8 @@ var minaraiClient = new MinaraiClient({
   io: io,
   socketIOOptions: ioOption, //options
   socketIORootURL: config.root,
-  userId: "test" + new Date().getTime(), // any string is fine
+  clientId: "test" + new Date().getTime(), // any string is fine
   //userId: "test1465921668070",
-  userName: "testuser", // any string is fine
 });
 
 
