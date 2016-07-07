@@ -1,3 +1,4 @@
+
 var io = require('socket.io-client');
 var commandLineArgs = require('command-line-args');
 var readline = require('readline');
@@ -5,6 +6,7 @@ var MinaraiClient = require("../dist/minarai-client").MinaraiClient;
 
 var args = (function(){
   var args = commandLineArgs([
+    { name: 'id', type: String },
     { name: 'showAll', alias: 'a', type: Boolean },
     { name: 'url', type: String },
     { name: 'basicAuth', type: String },
@@ -33,8 +35,7 @@ var minaraiClient = new MinaraiClient({
   io: io,
   socketIOOptions: ioOption, //options
   socketIORootURL: config.root,
-  clientId: "test" + new Date().getTime(), // any string is fine
-  //userId: "test1465921668070",
+  clientId: args.id || "test" + new Date().getTime(), // any string is fine
 });
 
 
@@ -68,7 +69,6 @@ minaraiClient.on( "message", function( data ){
 function sendToMinarai( message ){
   minaraiClient.send( message );
 }
-
 
 console.log("#### CONNECTING TO MINARAI ####");
 console.log("#### " +  config.root + " ####" );
