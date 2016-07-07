@@ -1,4 +1,5 @@
-
+"use strict"
+var p = console.log;
 var io = require('socket.io-client');
 var commandLineArgs = require('command-line-args');
 var readline = require('readline');
@@ -7,6 +8,7 @@ var MinaraiClient = require("../dist/minarai-client").MinaraiClient;
 var args = (function(){
   var args = commandLineArgs([
     { name: 'id', type: String },
+    { name: 'verbose', alias: 'v', type: Boolean },
     { name: 'showAll', alias: 'a', type: Boolean },
     { name: 'url', type: String },
     { name: 'basicAuth', type: String },
@@ -19,6 +21,12 @@ var args = (function(){
   }
   return args;
 })();
+
+p("")
+p("###################################")
+p("##            MINARAI            ##")
+p("###################################")
+p("")
 
 var config  = {
   root: args.url,
@@ -36,6 +44,8 @@ var minaraiClient = new MinaraiClient({
   socketIOOptions: ioOption, //options
   socketIORootURL: config.root,
   clientId: args.id || "test" + new Date().getTime(), // any string is fine
+  debug: args.verbose ,
+  silent: !args.verbose, 
 });
 
 
@@ -52,8 +62,10 @@ reader.on('close', function () {
 });
 
 minaraiClient.on('connect', function(){
-  console.log("#### Minarai CONNECTED ####");
-  var message = "";
+  p("## socket.io connected. trying to join as Minarai Client");
+});
+minaraiClient.on('joined', function(){
+  p("## Minarai CONNECTED");
   reader.prompt();
 });
 
@@ -61,7 +73,7 @@ minaraiClient.on( "message", function( data ){
   if( args.showAll ){
     console.log( data );
   }else{
-    console.log( data.utterance );
+    console.log( "BOT:" + data.utterance );
   }
   reader.prompt();
 });
@@ -70,9 +82,10 @@ function sendToMinarai( message ){
   minaraiClient.send( message );
 }
 
-console.log("#### CONNECTING TO MINARAI ####");
-console.log("#### " +  config.root + " ####" );
+
+p("## Connecting to " +  config.root + " ..." );
 if( !args.showAll ){
-  console.log("to show all the response from Minarai node-proxy, use '-a' option");
+  p("## to show all the response from Minarai node-proxy, use '-a' option");
 }
+p("");
 minaraiClient.init();
