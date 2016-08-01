@@ -70,6 +70,12 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
     logger.debug( `send : ${JSON.stringify(payload)}` );
     this.socket.emit('message', payload);
   }
+
+  public sendSystemCommand( command, payload ) {
+    const message = { command, payload };
+    logger.debug( `send system command : command="${command}", payload="${JSON.stringify(payload)}"` );
+    this.socket.emit('system-command', { message } );
+  }
 }
 
 
