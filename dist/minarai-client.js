@@ -53,6 +53,11 @@ var MinaraiClient = (function (_super) {
         logger_1.logger.debug("send : " + JSON.stringify(payload));
         this.socket.emit('message', payload);
     };
+    MinaraiClient.prototype.sendSystemCommand = function (command, payload) {
+        var message = { command: command, payload: payload };
+        logger_1.logger.debug("send system command : command=\"" + command + "\", payload=\"" + JSON.stringify(payload) + "\"");
+        this.socket.emit('system-command', { message: message });
+    };
     return MinaraiClient;
 })(EventEmmitter2.EventEmitter2);
 exports.MinaraiClient = MinaraiClient;
