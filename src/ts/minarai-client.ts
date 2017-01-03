@@ -36,6 +36,11 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       this.socket.emit('join-as-client', { clientId: this.clientId });
     });
 
+    this.socket.on('minarai-error', (e)=>{
+      logger.error( `error on MinaraiClient : ${JSON.stringify(e)}` );
+      this.emit('error', e );
+    });
+
     this.socket.on('message', (rcvData)=>{
       logger.debug("recieved message");
       const recievedData = backwardCompatibilitySupport( rcvData );
@@ -61,6 +66,7 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       }
       this.emit('system-message', data)
     });
+
 
   }
 
@@ -90,7 +96,7 @@ function backwardCompatibilitySupport( data ){
   if( data.head && data.body ){
     return data;
   }else{
-    logger.warn(`Minarai server seems to be older than v0.2.0. The response is corrected to new format. This backward compatibility support might not be done in the future. \ngiven data=${JSON.stringify(data)}`);
+    logger.warn(`Minarai server seems to be older than v0.1.0. The response is corrected to new format. This backward compatibility support might not be done in the future. \ngiven data=${JSON.stringify(data)}`);
     return {
       head: {
         serializedContext: data.serializedContext
