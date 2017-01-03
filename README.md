@@ -27,6 +27,7 @@ var io = require("socket.io-client");
 
 var minaraiClient = new MinaraiClient({
   io: io,                                             // Socket.io object
+  lang: "ja",                                       // ex: ja,en
   socketIORootURL: "http://",                       // ex: http://localhost:3000/minarai
   socketIOOptions: {},                          // options for io.connect method
   clientId: "clientID001", // any string is fine
@@ -44,6 +45,10 @@ minaraiClient.on( "message", function( data ){
   console.log("recieve message");
   console.log(data)
 });
+minaraiClient.on( "error", function( err ){
+  console.log("minarai client error");
+  console.log(err);
+});
 
 // send message "hello" to dialogue-hub every 3 seconds
 setInterval( function(){
@@ -57,6 +62,7 @@ setInterval( function(){
 ### constructor options
 
 * **io**: socket.io object
+* **lang**: language option( default: "ja" )
 * **socketIORootURL**:  root url of dialogue-hub  (ex) http://localhost:3000/minarai
 * **socketIOOptions**: options for io.connect method (ex) {}
 * **clientId: string**: clientId (ex) "clientId001"                  
@@ -66,11 +72,16 @@ setInterval( function(){
 ### methods
 
 * **send** : send message to dialogue-hub
+    * options
+        * lang : string : language option. ex: "ja", "en"
+            * if not passed, constructor options language will be taken.
+        * extra: any : you can pass extra info to dialogue-hub
 
 ```js
 // send "hello" to dialogue-hub
-cli.send("hello");
+cli.send("hello", options);
 ```
+
 
 * **sendSystemCommand** : send system command to dialogue-hub
 
@@ -99,10 +110,12 @@ cli.on("message", (data)=>{
 
 ```
 
+* **error** : emitted when something went wrong on dialogue-hub.
 * **utterance** : not supported yet. use "message" event for now.
 * **uiCommand** : not supported yet. use "message" event for now.
 * **systemCommand** : not supported. yet use "message" event for now.
 * **contextChanged** : not supported. yet use "message" event for now.
+
 
 # For Developpers
 

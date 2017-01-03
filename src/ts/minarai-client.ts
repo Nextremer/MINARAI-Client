@@ -4,11 +4,18 @@ import {logger} from "./logger";
 
 export interface MinaraiClientConstructorOptions{
   io: any;
+  lang: string;
   socketIORootURL: string;
   socketIOOptions: any;
   clientId: string;
   debug?: boolean;
   silent?: boolean;
+}
+
+
+export interface SendOptions{
+  lang?: string;
+  extra?: any;
 }
 
 export class MinaraiClient extends EventEmmitter2.EventEmitter2{
@@ -23,6 +30,7 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
     logger.set( {debug: options.debug, silent: options.silent});
     this.socket = options.io.connect( options.socketIORootURL, options.socketIOOptions );
     this.clientId =  options.clientId;
+    this.lang = options.lang || 'ja';
     logger.debug("new MINARAI CLIENT" );
     logger.debug(`options = JSON.stringify(options)`);
   }
@@ -70,14 +78,16 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
 
   }
 
-  public send( utter ){
+  public send( utter , options?: SendOptions ){
+    options = options || {};
     const payload = {
       head:{
         timestampUnixTime: new Date().getTime(),
-        lang: this.lang || 'ja',
+        lang: options.lang || this.lang || 'ja',
       },
       body:{ 
-        message: utter
+        message: utter,
+        extra: options.extra,
       }
     };
     logger.debug( `send : ${JSON.stringify(payload)}` );
