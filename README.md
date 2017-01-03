@@ -27,6 +27,7 @@ var io = require("socket.io-client");
 
 var minaraiClient = new MinaraiClient({
   io: io,                                             // Socket.io object
+  lang: "ja",                                       // ex: ja,en
   socketIORootURL: "http://",                       // ex: http://localhost:3000/minarai
   socketIOOptions: {},                          // options for io.connect method
   clientId: "clientID001", // any string is fine
@@ -44,6 +45,10 @@ minaraiClient.on( "message", function( data ){
   console.log("recieve message");
   console.log(data)
 });
+minaraiClient.on( "error", function( err ){
+  console.log("minarai client error");
+  console.log(err);
+});
 
 // send message "hello" to dialogue-hub every 3 seconds
 setInterval( function(){
@@ -57,6 +62,7 @@ setInterval( function(){
 ### constructor options
 
 * **io**: socket.io object
+* **lang**: language option( default: "ja" )
 * **socketIORootURL**:  root url of dialogue-hub  (ex) http://localhost:3000/minarai
 * **socketIOOptions**: options for io.connect method (ex) {}
 * **clientId: string**: clientId (ex) "clientId001"                  
@@ -66,10 +72,22 @@ setInterval( function(){
 ### methods
 
 * **send** : send message to dialogue-hub
+    * options
+        * lang : string : language option. ex: "ja", "en"
+            * if not passed, constructor option will be taken.
+        * extra: any : you can pass extra info to dialogue-hub. Directory added to the request payload.
 
 ```js
 // send "hello" to dialogue-hub
-cli.snd("hello");
+cli.send("hello", options);
+```
+
+
+* **sendSystemCommand** : send system command to dialogue-hub
+
+```js
+const command = "happyEmotionDetected";
+cli.sendSystemCommand(  command ,  { value: true });
 ```
 
 ### event
@@ -92,10 +110,24 @@ cli.on("message", (data)=>{
 
 ```
 
+* **error** : emitted when something went wrong on dialogue-hub.
 * **utterance** : not supported yet. use "message" event for now.
 * **uiCommand** : not supported yet. use "message" event for now.
 * **systemCommand** : not supported. yet use "message" event for now.
 * **contextChanged** : not supported. yet use "message" event for now.
+
+
+# Release Notes 
+
+### v0.2.0
+
+* To follow the protocol of Minarai-Dialogue-Hub v0.1.0
+    * response from DialogueHub   
+        * response now has two top level attribute `body` and `head`
+        * ordinal response is enclosed into body attribute of the response.
+        * systemContext is enclosed into body attribute of the response.
+    * listening Error event
+    * language options( see `constructor options` and `send method options` part )
 
 # For Developpers
 
@@ -106,4 +138,3 @@ npm install
 gulp tsd
 gulp tsc
 ```
-

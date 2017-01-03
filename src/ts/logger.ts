@@ -31,12 +31,10 @@ class Logger{
   }
   public error(t:string){
     if( !this.isSetup ){ this.loggerWarning(); }
-    if( this.silentMode ){ return; }
     console.error( `${red}[ERROR]${reset} ${t}` );
   }
   public warn(t:string){
     if( !this.isSetup ){ this.loggerWarning(); }
-    if( this.silentMode ){ return; }
     console.error( `${yellow}[WARN]${reset} ${t}` );
   }
 
