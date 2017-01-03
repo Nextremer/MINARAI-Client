@@ -69,7 +69,14 @@ setInterval( function(){
 
 ```js
 // send "hello" to dialogue-hub
-cli.snd("hello");
+cli.send("hello");
+```
+
+* **sendSystemCommand** : send system command to dialogue-hub
+
+```js
+const command = "happyEmotionDetected";
+cli.sendSystemCommand(  command ,  { value: true });
 ```
 
 ### event
