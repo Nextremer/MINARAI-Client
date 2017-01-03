@@ -117,6 +117,18 @@ cli.on("message", (data)=>{
 * **contextChanged** : not supported. yet use "message" event for now.
 
 
+# Release Notes 
+
+### v0.2.0
+
+* follow the protocol of Minarai-Dialogue-Hub v0.1.0
+    * response from DialogueHub   
+        * response now has two top level attribute `body` and `head`
+        * ordinal response is enclosed into body attribute of the response.
+        * systemContext is enclosed into body attribute of the response.
+    * listening Error event
+    * language options( see `constructor options` and `send method options` part )
+
 # For Developpers
 
 after clone this repository and at the project root,,
@@ -126,4 +138,3 @@ npm install
 gulp tsd
 gulp tsc
 ```
-
