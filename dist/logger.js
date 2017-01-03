@@ -41,17 +41,11 @@ var Logger = (function () {
         if (!this.isSetup) {
             this.loggerWarning();
         }
-        if (this.silentMode) {
-            return;
-        }
         console.error(red + "[ERROR]" + reset + " " + t);
     };
     Logger.prototype.warn = function (t) {
         if (!this.isSetup) {
             this.loggerWarning();
-        }
-        if (this.silentMode) {
-            return;
         }
         console.error(yellow + "[WARN]" + reset + " " + t);
     };

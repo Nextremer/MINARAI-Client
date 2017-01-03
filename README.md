@@ -74,8 +74,8 @@ setInterval( function(){
 * **send** : send message to dialogue-hub
     * options
         * lang : string : language option. ex: "ja", "en"
-            * if not passed, constructor options language will be taken.
-        * extra: any : you can pass extra info to dialogue-hub
+            * if not passed, constructor option will be taken.
+        * extra: any : you can pass extra info to dialogue-hub. Directory added to the request payload.
 
 ```js
 // send "hello" to dialogue-hub
@@ -121,7 +121,7 @@ cli.on("message", (data)=>{
 
 ### v0.2.0
 
-* follow the protocol of Minarai-Dialogue-Hub v0.1.0
+* To follow the protocol of Minarai-Dialogue-Hub v0.1.0
     * response from DialogueHub   
         * response now has two top level attribute `body` and `head`
         * ordinal response is enclosed into body attribute of the response.
