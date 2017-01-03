@@ -22,7 +22,7 @@ npm install Nextremer/MINARAI-Client --save
 #### usage
 
 ```js
-var MinaraiClient = require("minarai-client");
+var MinaraiClient = require("minarai-client").MinaraiClient;
 var io = require("socket.io-client");
 
 var minaraiClient = new MinaraiClient({
