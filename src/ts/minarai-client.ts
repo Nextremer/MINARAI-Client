@@ -52,17 +52,8 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
     this.socket.on('message', (rcvData)=>{
       logger.debug("recieved message");
       const recievedData = backwardCompatibilitySupport( rcvData );
-      if( recievedData.body.utterance ){
-        // onUtterance;
-      }
-      if( recievedData.body.uiCommand ){
-        //onUiCommand;
-      }
-      if( recievedData.head.serializedContext ){
-        //onSlotChanged;
-      }
       // raw
-      this.emit('message', recievedData)
+      this.emit('message', this.convertResponsePayload( recievedData ));
     });
 
     this.socket.on('system-message', (data)=>{
@@ -74,8 +65,14 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       }
       this.emit('system-message', data)
     });
+  }
 
+  public convertResponsePayload( recievedData  ){
+    return recievedData;
+  }
 
+  public convertRequestPayload( requestPayload ){
+    return requestPayload;
   }
 
   public send( utter , options?: SendOptions ){
@@ -94,7 +91,7 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       }
     };
     logger.debug( `send : ${JSON.stringify(payload)}` );
-    this.socket.emit('message', payload);
+    this.socket.emit('message', this.convertRequestPayload( payload ));
   }
 
   public sendSystemCommand( command, payload ) {

@@ -32,14 +32,8 @@ var MinaraiClient = (function (_super) {
         this.socket.on('message', function (rcvData) {
             logger_1.logger.debug("recieved message");
             var recievedData = backwardCompatibilitySupport(rcvData);
-            if (recievedData.body.utterance) {
-            }
-            if (recievedData.body.uiCommand) {
-            }
-            if (recievedData.head.serializedContext) {
-            }
             // raw
-            _this.emit('message', recievedData);
+            _this.emit('message', _this.convertResponsePayload(recievedData));
         });
         this.socket.on('system-message', function (data) {
             logger_1.logger.debug("recieved system message");
@@ -50,6 +44,12 @@ var MinaraiClient = (function (_super) {
             }
             _this.emit('system-message', data);
         });
+    };
+    MinaraiClient.prototype.convertResponsePayload = function (recievedData) {
+        return recievedData;
+    };
+    MinaraiClient.prototype.convertRequestPayload = function (requestPayload) {
+        return requestPayload;
     };
     MinaraiClient.prototype.send = function (utter, options) {
         options = options || {};
@@ -67,7 +67,7 @@ var MinaraiClient = (function (_super) {
             }
         };
         logger_1.logger.debug("send : " + JSON.stringify(payload));
-        this.socket.emit('message', payload);
+        this.socket.emit('message', this.convertRequestPayload(payload));
     };
     MinaraiClient.prototype.sendSystemCommand = function (command, payload) {
         var message = { command: command, payload: payload };
