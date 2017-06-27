@@ -20,28 +20,38 @@ export interface SendOptions{
 
 export class MinaraiClient extends EventEmmitter2.EventEmitter2{
   private latestUtter: string;
+  private socketIORootURL: string;
+  private socketIOOptions: any;
+  private io: any;
   public socket: SocketIO.Socket;
   public clientName: string;
   public clientId: string;
   public lang: string;
 
+
   constructor( options: MinaraiClientConstructorOptions ){
     super();
     logger.set( {debug: options.debug, silent: options.silent});
-    this.socket = options.io.connect( options.socketIORootURL, options.socketIOOptions );
+
+    this.io = options.io;
     this.clientId =  options.clientId;
+    this.socketIORootURL = options.socketIORootURL;
+    this.socketIOOptions = options.socketIOOptions;
     this.lang = options.lang || 'ja';
     logger.debug("new MINARAI CLIENT" );
     logger.debug(`options = JSON.stringify(options)`);
   }
 
-  init(){
+  init( initOptions: any = {} ){
+    this.socket = this.io.connect( this.socketIORootURL, this.socketIOOptions );
     this.socket.on('connect', ()=>{
       logger.info("connected to socket.io server");
       this.emit("connect");
 
       logger.debug("trying to join as Minarai Client....");
-      this.socket.emit('join-as-client', { clientId: this.clientId });
+      this.socket.emit('join-as-client', { clientId: this.clientId, extra: initOptions.joinOptions },(res:any)=>{
+        this.emit('join-failed' , res);
+      });
     });
 
     this.socket.on('minarai-error', (e)=>{

@@ -11,19 +11,25 @@ var MinaraiClient = (function (_super) {
     function MinaraiClient(options) {
         _super.call(this);
         logger_1.logger.set({ debug: options.debug, silent: options.silent });
-        this.socket = options.io.connect(options.socketIORootURL, options.socketIOOptions);
+        this.io = options.io;
         this.clientId = options.clientId;
+        this.socketIORootURL = options.socketIORootURL;
+        this.socketIOOptions = options.socketIOOptions;
         this.lang = options.lang || 'ja';
         logger_1.logger.debug("new MINARAI CLIENT");
         logger_1.logger.debug("options = JSON.stringify(options)");
     }
-    MinaraiClient.prototype.init = function () {
+    MinaraiClient.prototype.init = function (initOptions) {
         var _this = this;
+        if (initOptions === void 0) { initOptions = {}; }
+        this.socket = this.io.connect(this.socketIORootURL, this.socketIOOptions);
         this.socket.on('connect', function () {
             logger_1.logger.info("connected to socket.io server");
             _this.emit("connect");
             logger_1.logger.debug("trying to join as Minarai Client....");
-            _this.socket.emit('join-as-client', { clientId: _this.clientId });
+            _this.socket.emit('join-as-client', { clientId: _this.clientId, extra: initOptions.joinOptions }, function (res) {
+                _this.emit('join-failed', res);
+            });
         });
         this.socket.on('minarai-error', function (e) {
             logger_1.logger.error("error on MinaraiClient : " + JSON.stringify(e));

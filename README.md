@@ -32,7 +32,10 @@ var minaraiClient = new MinaraiClient({
   socketIOOptions: {},                          // options for io.connect method
   clientId: "clientID001", // any string is fine
 });
-minaraiClient.init();
+minaraiClient.init({
+  // any object which is passed to user authentication function on dialogue-hub as the second argument
+  joinOptions: { } 
+});
 
 // binding events
 minaraiClient.on('connect', function(){
