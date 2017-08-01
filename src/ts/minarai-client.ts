@@ -75,6 +75,11 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       }
       this.emit('system-message', data)
     });
+
+    this.socket.on('disconnect', () => {
+      logger.info('disconnect to socket.io server');
+      this.emit('disconnect');
+    });
   }
 
   public convertResponsePayload( recievedData  ){
@@ -95,7 +100,7 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
         timestampUnixTime: timestamp,
         lang: options.lang || this.lang || 'ja',
       },
-      body:{ 
+      body:{
         message: utter,
         extra: options.extra,
       }
@@ -125,5 +130,3 @@ function backwardCompatibilitySupport( data ){
     };
   }
 }
-
-
