@@ -76,6 +76,10 @@ export class MinaraiClient extends EventEmmitter2.EventEmitter2{
       this.emit('system-message', data)
     });
 
+    this.socket.on('system-command', (data) => {
+      this.emit('system-command', data);
+    });
+
     this.socket.on('disconnect', () => {
       logger.info('disconnect to socket.io server');
       this.emit('disconnect');

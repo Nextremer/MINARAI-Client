@@ -50,6 +50,9 @@ var MinaraiClient = (function (_super) {
             }
             _this.emit('system-message', data);
         });
+        this.socket.on('system-command', function (data) {
+            _this.emit('system-command', data);
+        });
         this.socket.on('disconnect', function () {
             logger_1.logger.info('disconnect to socket.io server');
             _this.emit('disconnect');
